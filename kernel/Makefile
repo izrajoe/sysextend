@@ -14,8 +14,8 @@
 
 
 EXTRA_CFLAGS := -I$(src)/../include
-obj-m += sysextended.o
-sysextended-objs := sysextend_rootkit.o sysextend_table.o sysextend_main.o
+obj-m += sysextend.o
+sysextend-objs := sysextend_rootkit.o sysextend_table.o sysextend_main.o
 
 all:
 	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules

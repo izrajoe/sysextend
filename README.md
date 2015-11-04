@@ -28,11 +28,11 @@ To make your kernel module:
 To install your kernel module:
 
 1. cd kernel
-2. insmod kobj/sysextended.ko
+2. sudo insmod kobj/sysextend.ko
 
 To uninstall your kernel module:
 
-1. rmmod sysextended.ko
+1. sudo rmmod sysextend.ko
 
 To call your syscall from user space
 
