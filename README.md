@@ -41,3 +41,13 @@ To call your syscall from user space
 3. Use the sysextend function to call the syscall, e.g. `sysextend(__NR_dummy, &args);`
 
 
+HOW IT WORKS
+------------
+
+The module leverages the effectively deprecated `sysctl` syscall to pass arguments through to the kernel.  
+
+REFERENCES
+----------
+
+For info on kernel programming, see:
+http://www.tldp.org/LDP/lkmpg/2.6/html/lkmpg.html
