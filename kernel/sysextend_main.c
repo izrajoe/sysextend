@@ -50,14 +50,14 @@ unsigned long sys_printk(void* wrap){
 
 unsigned long sys_monitor(void* wrap){
 	//struct mwait_args* args = (struct mwait_args*)wrap;
-  printk("monitor invoked\n");
+	printk("monitor invoked\n");
 	//__monitor(args->ptr,args->ecx, args->edx);
 	return 0;
 }
 
 unsigned long sys_mwait(void* wrap){
 	//struct mwait_args* args = (struct mwait_args*)wrap;
-  printk("mwait invoked\n");
+	printk("mwait invoked\n");
 	//__mwait(args->ecx, args->edx);
 	return 0;
 }
@@ -85,7 +85,7 @@ static void __exit sysextend_exit(void) {
 
 	// A lock would solve this, but we'd prefer better performance
 	printk(KERN_ALERT "sysextend exit\n");
-  rootkit_exit();
+	rootkit_exit();
 }
 
 

@@ -69,20 +69,20 @@ static unsigned long **find_sys_call_table(void){
 // Based on:
 // http://vulnfactory.org/blog/2011/08/12/wp-safe-or-not/
 static void disable_page_protection(void) {
-    unsigned long cr0;
-    preempt_disable();
-    barrier();
-    cr0 = read_cr0() ^ X86_CR0_WP;
-    BUG_ON(unlikely(cr0 & X86_CR0_WP));
-    write_cr0(cr0);
+	unsigned long cr0;
+	preempt_disable();
+	barrier();
+	cr0 = read_cr0() ^ X86_CR0_WP;
+	BUG_ON(unlikely(cr0 & X86_CR0_WP));
+	write_cr0(cr0);
 }
 static void enable_page_protection(void) {
-    unsigned long cr0;
-    cr0 = read_cr0() ^ X86_CR0_WP;
-    BUG_ON(unlikely(!(cr0 & X86_CR0_WP)));
-    write_cr0(cr0);
-    barrier();
-    preempt_enable();
+	unsigned long cr0;
+	cr0 = read_cr0() ^ X86_CR0_WP;
+	BUG_ON(unlikely(!(cr0 & X86_CR0_WP)));
+	write_cr0(cr0);
+	barrier();
+	preempt_enable();
 }
 
 
